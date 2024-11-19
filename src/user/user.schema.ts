@@ -3,7 +3,8 @@ import { Document } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { UserRole } from './user.enum';
 
-@Schema()
+// timestamps option can create createdAt / updatedAt automatically
+@Schema({ timestamps: true })
 export class User extends Document {
   @Prop({ unique:true, required: true })
   email: string;
