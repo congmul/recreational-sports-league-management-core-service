@@ -4,12 +4,14 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { isObjectIdOrHexString } from 'mongoose';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create a user', description: 'Create a user' })
   async create(@Body() createUserDto: CreateUserDto) {
     try{
       const user = await this.userService.create(createUserDto);
@@ -59,11 +61,13 @@ export class UserController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Get all users', description: 'Get all users' })
   findAll() {
     return this.userService.findAll();
   }
 
   @Get(':identifier')
+  @ApiOperation({ summary: 'Get a user by an identifier', description: 'Get a user by an identifier. Identifier will be Mongo Id or email' })
   async findOne(@Param('identifier') identifier: string) {
     let user: Omit<CreateUserDto, 'password'>;
     if(isEmail(identifier)){
@@ -103,6 +107,7 @@ export class UserController {
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: 'Update a user by id', description: 'Update a user by id' })
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     try{
       await this.userService.update(id, updateUserDto);
@@ -147,6 +152,7 @@ export class UserController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete a user by id', description: 'Delete a user by id' })
   async remove(@Param('id') id: string) {
     try{
       await this.userService.remove(id);
