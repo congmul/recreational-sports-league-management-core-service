@@ -20,6 +20,11 @@ export class User extends Document {
 
   @Prop({ enum: UserRole })
   role: UserRole
+
+  // Add custom function, "comparePassword" into typescript to call it later.
+  async comparePassword(candidatePassword: string): Promise<boolean> {
+    return bcrypt.compare(candidatePassword, this.password);
+  }
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
@@ -42,6 +47,6 @@ UserSchema.pre('save', async function (next) {
 })
 
 // Method to compare password for authentication
-UserSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {
+UserSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {    
     return bcrypt.compare(candidatePassword, this.password);
 };
