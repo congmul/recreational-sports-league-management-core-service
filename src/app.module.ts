@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { envValidate } from './env.validation';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { envValidate } from './env.validation';
       }),
       inject: [ConfigService],
     }),    
-    UserModule
+    UserModule, HealthModule
   ],
   controllers: [AppController],
   providers: [AppService],
