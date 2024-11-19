@@ -16,7 +16,7 @@ async function bootstrap() {
   // Configure Swagger
   const config = new DocumentBuilder()
   .setTitle('API Specification')
-  .setDescription('API documentation for Recreational sprots league management')
+  .setDescription('API documentation for Recreational sports league management')
   .setVersion(version)
   .addBearerAuth() // Add security scheme for token-based authentication
   .build();
