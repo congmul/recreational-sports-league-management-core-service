@@ -17,6 +17,7 @@ import { HealthModule } from './health/health.module';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('MONGODB_URI'), // Access the MONGODB_URI variable
+        dbName: configService.get<string>('MONGO_DB_NAME'),
       }),
       inject: [ConfigService],
     }),    
