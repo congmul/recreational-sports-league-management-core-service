@@ -1,10 +1,26 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { UserModule } from './user/user.module';
+import { envValidate } from './env.validation';
+import { HealthModule } from './health/health.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, // Make ConfigModule globally available
+      // If a variable is found in multiple files, the first one takes precedence.
+      envFilePath: ['.env.local', '.env'],
+      validate: envValidate
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGODB_URI'), // Access the MONGODB_URI variable
+      }),
+      inject: [ConfigService],
+    }),    
+    UserModule, HealthModule
+  ]
 })
 export class AppModule {}
