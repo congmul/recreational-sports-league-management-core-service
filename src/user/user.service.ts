@@ -37,6 +37,9 @@ export class UserService {
     return this.userModel.findOne({_id: id}).select(['-password', '-__v']).exec();
   }
 
+  findUserForLogin(email: string) {
+    return this.userModel.findOne({email}).select(['-__v']).exec();
+  }
   async update(id: string, updateUserDto: UpdateUserDto) {
     const exiting = await this.findById(id);
     if(!exiting){
