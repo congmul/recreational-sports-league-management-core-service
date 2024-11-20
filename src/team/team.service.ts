@@ -86,9 +86,64 @@ export class TeamService {
     .populate({ path: 'coach', strictPopulate: false }) // Populate coach
     .exec();
   }
+  findByIdWithoutPopulate(id: string){
+    return this.teamModel.findOne({_id: id}).exec();
+  }
 
-  update(id: number, updateTeamDto: UpdateTeamDto) {
-    return `This action updates a #${id} team`;
+  async update(id: string, updateTeamDto: UpdateTeamDto) {
+    const existing = await this.findByIdWithoutPopulate(id);
+    if(!existing){
+      throw { name: "NotFoundError" }
+    }
+    if(updateTeamDto.players && updateTeamDto.players.length > 0){
+      // iterating over all existing players and set team null
+      if(existing.players && existing.players.length > 0){
+        const bulkOperations = existing.players.map(playerId => ({
+          updateOne: {
+            filter: { _id: playerId }, // Match by player ID
+            update: {
+              team: null,
+              joinedTeam: null,
+            },
+          },
+        }));
+        // Execute bulk operations
+        await this.playerModel.bulkWrite(bulkOperations);
+      }
+      // iterating over all new players and set team id
+      const bulkOperations = updateTeamDto.players.map(playerId => ({
+        updateOne: {
+          filter: { _id: playerId }, // Match by player ID
+          update: {
+            team: id,
+            joinedTeam: Date.now(),
+          },
+        },
+      }));
+      // Execute bulk operations
+      await this.playerModel.bulkWrite(bulkOperations);
+    }
+    if(updateTeamDto.coach){
+      // access existing coach and set team null
+      if(existing.coach){
+        await this.coachModel.findByIdAndUpdate(existing.coach, 
+          {team: null}
+        )
+      }
+      // iterating over all new players and set team id
+      await this.coachModel.findByIdAndUpdate(updateTeamDto.coach, 
+        {team: id}
+      )
+    }
+
+    return await this.teamModel.findByIdAndUpdate(id, {
+      name: updateTeamDto.name || existing.name, 
+      establish: updateTeamDto.establish || existing.establish,
+      homeStadium: updateTeamDto.homeStadium || existing.homeStadium,
+      players: updateTeamDto.players || existing.players,
+      maxNumber: updateTeamDto.maxNumber || existing.maxNumber,
+      coach: updateTeamDto.coach || existing.coach,
+    })
   }
 
   async remove(id: string) {

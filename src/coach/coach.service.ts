@@ -51,12 +51,12 @@ export class CoachService {
     .exec();
   }
 
-  findByIdForDelete(id: string) {
+  findByIdWithoutPopulate(id: string) {
     return this.coachModel.findOne({_id: id}).exec();
   }
 
   async update(id: string, updateCoachDto: UpdateCoachDto) {
-    const existing = await this.findById(id);
+    const existing = await this.findByIdWithoutPopulate(id);
     if(!existing){
       throw { name: "NotFoundError" }
     }
@@ -89,7 +89,7 @@ export class CoachService {
   }
 
   async remove(id: string) {
-    const existing = await this.findByIdForDelete(id);
+    const existing = await this.findByIdWithoutPopulate(id);
     if(!existing){
       throw { name: "NotFoundError" }
     }

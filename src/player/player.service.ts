@@ -61,12 +61,12 @@ export class PlayerService {
     .exec();
   }
 
-  findByIdForDelete(id: string){
+  findByIdWithoutPopulate(id: string){
     return this.playerModel.findOne({_id: id}).exec();
   }
 
   async update(id: string, updatePlayerDto: UpdatePlayerDto) {
-    const existing = await this.findById(id);
+    const existing = await this.findByIdWithoutPopulate(id);
     if(!existing){
       throw { name: "NotFoundError" }
     }
@@ -94,7 +94,7 @@ export class PlayerService {
   }
 
   async remove(id: string) {
-    const existing = await this.findByIdForDelete(id);
+    const existing = await this.findByIdWithoutPopulate(id);
     if(!existing){
       throw { name: "NotFoundError" }
     }

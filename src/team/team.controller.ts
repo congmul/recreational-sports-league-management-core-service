@@ -48,7 +48,6 @@ export class TeamController {
     return this.teamService.findAll();
   }
 
-  // TODO: get referencing
   @Get(':identifier')
   @ApiOperation({ summary: 'Get a team by an identifier', description: 'Get a team by an identifier' })
   async findOne(@Param('identifier') identifier: string) {
@@ -76,8 +75,45 @@ export class TeamController {
 
   // TODO: 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTeamDto: UpdateTeamDto) {
-    return this.teamService.update(+id, updateTeamDto);
+  async update(@Param('id') id: string, @Body() updateTeamDto: UpdateTeamDto) {
+    try{ 
+      return this.teamService.update(id, updateTeamDto);
+    }catch(error){
+      if(error?.name === 'NotFoundError'){
+        throw new HttpException(
+          {
+            status: HttpStatus.NOT_FOUND,
+            error: `No team found with the provided ID: ${id}`
+          },
+          HttpStatus.NOT_FOUND,
+          {
+            cause: `No team found with the provided ID: ${id}`
+          }
+        )
+      }else if(error?.name === 'CastError'){
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error: error
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error
+          }
+        )
+      }
+
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: error
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR, 
+        {
+          cause: error
+        }
+      )
+    }
   }
 
   @Delete(':id')

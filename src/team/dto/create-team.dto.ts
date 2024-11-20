@@ -22,7 +22,12 @@ export class CreateTeamDto {
     @IsMongoId({ each: true, message: 'Each player ID must be a valid MongoDB ObjectId' }) // Validates each element in the array
     @IsOptional()
     players: Player[];
-  
+
+    @ApiProperty({ example: 35, description: 'max number of players' })
+    @IsInt()
+    @IsOptional()
+    maxNumber: number
+
     @ApiProperty({ example: 'objectId of a coach', description: 'Coach' })
     @IsMongoId({ message: 'Coach must be a valid MongoDB ObjectId' })
     @IsOptional()
