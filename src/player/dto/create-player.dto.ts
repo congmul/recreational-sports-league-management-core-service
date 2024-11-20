@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsEnum, IsMongoId, IsNotEmpty, IsString } from "class-validator";
+import { IsDate, IsEnum, IsMongoId, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { Team } from "src/team/entities/team.entity";
 import { PlayerPosition } from "../player.enum";
 
@@ -12,16 +12,17 @@ export class CreatePlayerDto {
     @IsNotEmpty()
     lastName: string;
 
-    @ApiProperty({ example: 'south korea', description: 'position of the player' })
+    @ApiProperty({ example: 'south korea', description: 'nationality of the player' })
     @IsString()
     nationality: string
 
-    @ApiProperty({ example: '1992-08-07', description: 'position of the player' })
+    @ApiProperty({ example: '1992-08-07', description: 'date of birth of the player' })
     @IsString()
     dateOfBirth: Date
 
-    @ApiProperty({ example: 'objectId of a team', description: 'position of the player' })
+    @ApiProperty({ example: 'objectId of a team', description: 'team of the player' })
     @IsMongoId({ message: 'Team must be a valid MongoDB ObjectId' })
+    @IsOptional()
     team: Team
 
     @ApiProperty({ example: '2015-09-13', description: 'joined date of the player' })

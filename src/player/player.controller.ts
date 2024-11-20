@@ -9,6 +9,7 @@ export class PlayerController {
   constructor(private readonly playerService: PlayerService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create a new player', description: 'Create a new player' })
   async create(@Body() createPlayerDto: CreatePlayerDto) {
     try{
       return await this.playerService.create(createPlayerDto);
