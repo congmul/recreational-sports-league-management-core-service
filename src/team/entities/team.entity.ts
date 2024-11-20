@@ -34,7 +34,7 @@ export class Team extends Document {
   maxNumber: number;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Coach' })
-  coaches: Coach;
+  coach: Coach;
 }
 
 export const TeamSchema = SchemaFactory.createForClass(Team);

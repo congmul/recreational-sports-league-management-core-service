@@ -20,7 +20,7 @@ export class Player extends Document {
     @Prop( {type: mongoose.Schema.Types.ObjectId, ref: 'Team'} )
     team: Team
 
-    @Prop()
+    @Prop( { default: Date.now() })
     joinedTeam: Date
 
     @Prop()

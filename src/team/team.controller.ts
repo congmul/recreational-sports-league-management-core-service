@@ -63,11 +63,11 @@ export class TeamController {
       throw new HttpException(
         {
           status: HttpStatus.NOT_FOUND,
-          error: `No user found with the provided identifier: ${identifier}`
+          error: `No team found with the provided identifier: ${identifier}`
         },
         HttpStatus.NOT_FOUND,
         {
-          cause: `No user found with the provided identifier: ${identifier}`
+          cause: `No team found with the provided identifier: ${identifier}`
         }
       )
     }

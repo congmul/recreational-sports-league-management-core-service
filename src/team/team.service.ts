@@ -21,7 +21,7 @@ export class TeamService {
     if(exiting){
       throw { name: "DuplicatedError" }
     }
-
+    // TODO: session can't be used because it is not replica set
     const session = await this.connection.startSession();
     session.startTransaction();
     try{
@@ -44,15 +44,25 @@ export class TeamService {
           },
         }));
         // Execute bulk operations
-        await this.playerModel.bulkWrite(bulkOperations);
+        await this.playerModel.bulkWrite(bulkOperations, 
+          // { session }
+        );
       }
       if(createTeamDto.coach){
         await this.coachModel.findByIdAndUpdate(createTeamDto.coach, 
-          { team: newTeam._id, joinedTeam: Date.now()}
+          { team: newTeam._id, joinedTeam: Date.now()},
+          // { session }
         )
       }
-      return newTeam.save();
+      await newTeam.save(
+        // { session }
+      );
+      // Commit the transaction
+      await session.commitTransaction();
+      return newTeam;
     }catch(error){
+      // Abort the transaction on error
+      await session.abortTransaction();
       throw error;
     }finally {
       session.endSession();
@@ -63,10 +73,18 @@ export class TeamService {
     return this.teamModel.find().select(['-__v']).exec();
   }
   findByName(name: string){
-    return this.teamModel.findOne({name}).select(['-__v']).exec();
+    return this.teamModel.findOne({name})
+    .select(['-__v'])
+    .populate('players') // Populate players
+    .populate({ path: 'coach', strictPopulate: false }) // Populate coach
+    .exec();
   }
   findById(id: string) {
-    return this.teamModel.findOne({_id: id}).select(['-__v']).exec();
+    return this.teamModel.findOne({_id: id})
+    .select(['-__v'])
+    .populate('players') // Populate players
+    .populate({ path: 'coach', strictPopulate: false }) // Populate coach
+    .exec();
   }
 
   update(id: number, updateTeamDto: UpdateTeamDto) {
@@ -74,9 +92,29 @@ export class TeamService {
   }
 
   async remove(id: string) {
-    const exiting = await this.findById(id);
-    if(!exiting){
+    const existing = await this.findById(id);
+    if(!existing){
       throw { name: "NotFoundError" }
+    }
+    // remove team from all players and coach
+    if(existing.players && existing.players.length > 0){
+      const bulkOperations = existing.players.map(playerId => ({
+        updateOne: {
+          filter: { _id: playerId }, // Match by player ID
+          update: {
+            team: null,
+            joinedTeam: null
+          },
+        },
+      }));
+      // Execute bulk operations
+      await this.playerModel.bulkWrite(bulkOperations);
+    }
+    if(existing.coach){
+      await this.coachModel.findByIdAndUpdate(
+        existing.coach,
+        { team: null }
+      )
     }
     return this.teamModel.deleteOne({_id: id}).exec();
   }
