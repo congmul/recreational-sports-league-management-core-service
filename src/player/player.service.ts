@@ -65,8 +65,32 @@ export class PlayerService {
     return this.playerModel.findOne({_id: id}).exec();
   }
 
-  update(id: number, updatePlayerDto: UpdatePlayerDto) {
-    return `This action updates a #${id} player`;
+  async update(id: string, updatePlayerDto: UpdatePlayerDto) {
+    const existing = await this.findById(id);
+    if(!existing){
+      throw { name: "NotFoundError" }
+    }
+    if(updatePlayerDto.team){
+      // Remove the player from original team
+      await this.teamModel.findByIdAndUpdate(
+        existing.team,
+        { $pull: { players: id} }
+      )
+      // Add the player to new team
+      await this.teamModel.findByIdAndUpdate(
+        updatePlayerDto.team,
+        { $push: { players: id} }
+      )
+    }
+    return await this.playerModel.findByIdAndUpdate(id, {
+      firstName: updatePlayerDto.firstName || existing.firstName, 
+      lastName: updatePlayerDto.lastName || existing.lastName,
+      nationality: updatePlayerDto.nationality || existing.nationality,
+      dateOfBirth: updatePlayerDto.dateOfBirth || existing.dateOfBirth,
+      team: updatePlayerDto.team || existing.team,
+      joinedTeam: updatePlayerDto.joinedTeam || existing.joinedTeam,
+      position: updatePlayerDto.position || existing.position,
+    })
   }
 
   async remove(id: string) {

@@ -78,10 +78,48 @@ export class PlayerController {
     }
   }
 
-  // TODO: Update player
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePlayerDto: UpdatePlayerDto) {
-    return this.playerService.update(+id, updatePlayerDto);
+  @ApiOperation({ summary: 'Update a player by an id', description: 'Update a player by an id' })
+  async update(@Param('id') id: string, @Body() updatePlayerDto: UpdatePlayerDto) {
+    try{
+      await this.playerService.update(id, updatePlayerDto);
+      return { status: HttpStatus.ACCEPTED, message: 'Player successfully updated.'}
+    }catch(error){
+      if(error?.name === 'NotFoundError'){
+        throw new HttpException(
+          {
+            status: HttpStatus.NOT_FOUND,
+            error: `No player found with the provided ID: ${id}`
+          },
+          HttpStatus.NOT_FOUND,
+          {
+            cause: `No player found with the provided ID: ${id}`
+          }
+        )
+      }else if(error?.name === 'CastError'){
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error: error
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error
+          }
+        )
+      }
+
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: error
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR, 
+        {
+          cause: error
+        }
+      )
+    }
   }
 
   @Delete(':id')
