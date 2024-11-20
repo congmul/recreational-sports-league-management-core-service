@@ -41,20 +41,20 @@ export class UserService {
     return this.userModel.findOne({email}).select(['-__v']).exec();
   }
   async update(id: string, updateUserDto: UpdateUserDto) {
-    const exiting = await this.findById(id);
-    if(!exiting){
+    const existing = await this.findById(id);
+    if(!existing){
       throw { name: "NotFoundError" }
     }
     await this.userModel.findByIdAndUpdate(id, {
-      firstName: updateUserDto.firstName || exiting.firstName, 
-      lastName: updateUserDto.lastName || exiting.lastName, 
-      role: updateUserDto.role || exiting.role
+      firstName: updateUserDto.firstName || existing.firstName, 
+      lastName: updateUserDto.lastName || existing.lastName, 
+      role: updateUserDto.role || existing.role
     })
   }
 
   async remove(id: string) {
-    const exiting = await this.findById(id);
-    if(!exiting){
+    const existing = await this.findById(id);
+    if(!existing){
       throw { name: "NotFoundError" }
     }
     return this.userModel.deleteOne({_id: id}).exec();
