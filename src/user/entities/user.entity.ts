@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { UserRole } from './user.enum';
+import { UserRole } from '../user.enum';
 
 // timestamps option can create createdAt / updatedAt automatically
 @Schema({ timestamps: true })
