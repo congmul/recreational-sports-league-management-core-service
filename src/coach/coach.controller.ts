@@ -26,7 +26,6 @@ export class CoachController {
             cause: error
           }
         )
-
       }
       throw new HttpException(
         {
@@ -54,8 +53,59 @@ export class CoachController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCoachDto: UpdateCoachDto) {
-    return this.coachService.update(+id, updateCoachDto);
+  @ApiOperation({ summary: 'Update a coach by an id', description: 'Update a coach by an id' })
+  async update(@Param('id') id: string, @Body() updateCoachDto: UpdateCoachDto) {
+    try{
+      await this.coachService.update(id, updateCoachDto);
+      return { status: HttpStatus.ACCEPTED, message: 'Coach successfully updated.'}
+    }catch(error){
+      if(error?.name === 'NotFoundError'){
+        throw new HttpException(
+          {
+            status: HttpStatus.NOT_FOUND,
+            error: `No coach found with the provided ID: ${id}`
+          },
+          HttpStatus.NOT_FOUND,
+          {
+            cause: `No coach found with the provided ID: ${id}`
+          }
+        )
+      }else if(error?.name === 'CastError'){
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error: error
+          },
+          HttpStatus.BAD_REQUEST,
+          {
+            cause: error
+          }
+        )
+      }else if(error.name === 'DuplicatedCoachError'){
+        throw new HttpException(
+          {
+            status: HttpStatus.CONFLICT,
+            ...error,
+            error: `the team, "${updateCoachDto.team}", already has a coach`
+          },
+          HttpStatus.CONFLICT, 
+          {
+            cause: error
+          }
+        )
+      }
+
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: error
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR, 
+        {
+          cause: error
+        }
+      )
+    }
   }
 
   @Delete(':id')

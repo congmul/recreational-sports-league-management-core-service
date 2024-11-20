@@ -55,8 +55,37 @@ export class CoachService {
     return this.coachModel.findOne({_id: id}).exec();
   }
 
-  update(id: number, updateCoachDto: UpdateCoachDto) {
-    return `This action updates a #${id} coach`;
+  async update(id: string, updateCoachDto: UpdateCoachDto) {
+    const existing = await this.findById(id);
+    if(!existing){
+      throw { name: "NotFoundError" }
+    }
+    if(updateCoachDto.team){
+      const team = await this.teamModel.findById(updateCoachDto.team);
+      // Check if a coach is already assigned
+      if (team.coach) {
+        throw { name: "DuplicatedCoachError" }
+      }
+
+      // Remove the player from original team
+      await this.teamModel.findByIdAndUpdate(
+        existing.team,
+        { coach: null }
+      )
+      // Add the player to new team
+      await this.teamModel.findByIdAndUpdate(
+        updateCoachDto.team,
+        { coach: id }
+      )
+    }
+    return await this.coachModel.findByIdAndUpdate(id, {
+      firstName: updateCoachDto.firstName || existing.firstName, 
+      lastName: updateCoachDto.lastName || existing.lastName,
+      nationality: updateCoachDto.nationality || existing.nationality,
+      dateOfBirth: updateCoachDto.dateOfBirth || existing.dateOfBirth,
+      team: updateCoachDto.team || existing.team,
+      joinedTeam: updateCoachDto.joinedTeam || existing.joinedTeam,
+    })
   }
 
   async remove(id: string) {
