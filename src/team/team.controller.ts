@@ -73,8 +73,8 @@ export class TeamController {
     return team;
   }
 
-  // TODO: 
   @Patch(':id')
+  @ApiOperation({ summary: 'Update a team by an identifier', description: 'Update a team by an identifier' })
   async update(@Param('id') id: string, @Body() updateTeamDto: UpdateTeamDto) {
     try{ 
       return this.teamService.update(id, updateTeamDto);
