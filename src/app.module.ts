@@ -8,6 +8,8 @@ import { AuthModule } from './auth/auth.module';
 import { TeamModule } from './team/team.module';
 import { PlayerModule } from './player/player.module';
 import { CoachModule } from './coach/coach.module';
+import { SeedService } from './seed/seed.service';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
@@ -25,7 +27,8 @@ import { CoachModule } from './coach/coach.module';
       }),
       inject: [ConfigService],
     }),    
-    UserModule, HealthModule, AuthModule, TeamModule, PlayerModule, CoachModule
-  ]
+    UserModule, HealthModule, AuthModule, TeamModule, PlayerModule, CoachModule, SeedModule
+  ],
+  providers: [SeedService]
 })
 export class AppModule {}

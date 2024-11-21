@@ -12,6 +12,9 @@ export class Player extends Document {
     lastName: string;
 
     @Prop()
+    shirtNumber: number
+
+    @Prop()
     nationality: string
 
     @Prop()
@@ -22,6 +25,9 @@ export class Player extends Document {
 
     @Prop( { default: Date.now() })
     joinedTeam: Date
+
+    @Prop()
+    section: string
 
     @Prop()
     position: string

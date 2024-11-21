@@ -9,6 +9,12 @@ export class Team extends Document {
   @Prop({ unique:true, required: true })
   name: string;
 
+  @Prop()
+  tla: string;
+  
+  @Prop()
+  crest:string;
+
   @Prop({
     type: Date,
     set: (value: number | string) => new Date(`${value}-01-01T00:00:00Z`), // Store as a date object
