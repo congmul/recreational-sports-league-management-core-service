@@ -5,6 +5,11 @@ import { UserModule } from './user/user.module';
 import { envValidate } from './env.validation';
 import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
+import { TeamModule } from './team/team.module';
+import { PlayerModule } from './player/player.module';
+import { CoachModule } from './coach/coach.module';
+import { SeedService } from './seed/seed.service';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
@@ -22,7 +27,8 @@ import { AuthModule } from './auth/auth.module';
       }),
       inject: [ConfigService],
     }),    
-    UserModule, HealthModule, AuthModule
-  ]
+    UserModule, HealthModule, AuthModule, TeamModule, PlayerModule, CoachModule, SeedModule
+  ],
+  providers: [SeedService]
 })
 export class AppModule {}
