@@ -4,7 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { envValidate } from './env.validation';
 import { HealthModule } from './health/health.module';
-// import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './auth/auth.module';
 import { TeamModule } from './team/team.module';
 import { PlayerModule } from './player/player.module';
 import { CoachModule } from './coach/coach.module';
@@ -28,7 +28,7 @@ import { SeedModule } from './seed/seed.module';
       inject: [ConfigService],
     }),    
     UserModule, HealthModule, 
-    // AuthModule, 
+    AuthModule, 
     TeamModule, PlayerModule, CoachModule, SeedModule
   ],
   providers: [SeedService]
