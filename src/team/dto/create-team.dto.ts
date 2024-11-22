@@ -18,6 +18,16 @@ export class CreateTeamDto {
     @IsOptional()
     crest: string
 
+    @ApiProperty({ example: '#FDB913', description: 'theme color of the team' })
+    @IsString()
+    @IsOptional()
+    teamColor: string
+
+    @ApiProperty({ example: 'London', description: 'base city of the team' })
+    @IsString()
+    @IsOptional()
+    baseCity: string
+
     @ApiProperty({ example: '1882', description: 'Year the team was established' })
     @IsInt()
     @Min(1800) // Example: Minimum year allowed
