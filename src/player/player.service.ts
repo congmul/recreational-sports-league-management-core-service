@@ -21,6 +21,7 @@ export class PlayerService {
       const newPlayer = new this.playerModel({ 
         firstName: createPlayerDto.firstName,
         lastName: createPlayerDto.lastName,
+        profileUrl: createPlayerDto.profileUrl,
         dateOfBirth: createPlayerDto.dateOfBirth,
         joinedTeam: createPlayerDto.joinedTeam,
         nationality: createPlayerDto.nationality,
@@ -85,6 +86,7 @@ export class PlayerService {
     return await this.playerModel.findByIdAndUpdate(id, {
       firstName: updatePlayerDto.firstName || existing.firstName, 
       lastName: updatePlayerDto.lastName || existing.lastName,
+      profileUrl: updatePlayerDto.profileUrl || existing.profileUrl,
       nationality: updatePlayerDto.nationality || existing.nationality,
       dateOfBirth: updatePlayerDto.dateOfBirth || existing.dateOfBirth,
       team: updatePlayerDto.team || existing.team,

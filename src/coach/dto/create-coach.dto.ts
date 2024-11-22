@@ -11,6 +11,10 @@ export class CreateCoachDto {
     @IsNotEmpty()
     lastName: string;
 
+    @ApiProperty({ example: 'https://crests.football-data.org/73.png', description: 'url link of the coach' })
+    @IsNotEmpty()
+    profileUrl: string;
+
     @ApiProperty({ example: 'australia', description: 'nationality of the coach' })
     @IsString()
     nationality: string
