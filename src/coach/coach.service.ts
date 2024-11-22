@@ -18,6 +18,7 @@ export class CoachService {
       const newCoach = new this.coachModel({ 
         firstName: createCoachDto.firstName,
         lastName: createCoachDto.lastName,
+        profileUrl: createCoachDto.profileUrl,
         dateOfBirth: createCoachDto.dateOfBirth,
         joinedTeam: createCoachDto.joinedTeam,
         nationality: createCoachDto.nationality,
@@ -83,6 +84,7 @@ export class CoachService {
     return await this.coachModel.findByIdAndUpdate(id, {
       firstName: updateCoachDto.firstName || existing.firstName, 
       lastName: updateCoachDto.lastName || existing.lastName,
+      profileUrl: updateCoachDto.profileUrl || existing.profileUrl,
       nationality: updateCoachDto.nationality || existing.nationality,
       dateOfBirth: updateCoachDto.dateOfBirth || existing.dateOfBirth,
       team: updateCoachDto.team || existing.team,

@@ -15,6 +15,9 @@ export class Player extends Document {
     shirtNumber: number
 
     @Prop()
+    profileUrl: string
+
+    @Prop()
     nationality: string
 
     @Prop()

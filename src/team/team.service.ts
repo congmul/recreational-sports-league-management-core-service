@@ -27,6 +27,10 @@ export class TeamService {
     try{
       const newTeam = new this.teamModel({ 
         name: createTeamDto.name,
+        tla: createTeamDto.tla,
+        crest: createTeamDto.crest,
+        teamColor: createTeamDto.teamColor,
+        baseCity: createTeamDto.baseCity,
         establish: createTeamDto.establish,
         homeStadium: createTeamDto.homeStadium,
         players: createTeamDto.players || [],
@@ -138,6 +142,10 @@ export class TeamService {
 
     return await this.teamModel.findByIdAndUpdate(id, {
       name: updateTeamDto.name || existing.name, 
+      tla: updateTeamDto.tla || existing.tla,
+      crest: updateTeamDto.crest || existing.crest,
+      teamColor: updateTeamDto.teamColor || existing.teamColor,
+      baseCity: updateTeamDto.baseCity || existing.baseCity,
       establish: updateTeamDto.establish || existing.establish,
       homeStadium: updateTeamDto.homeStadium || existing.homeStadium,
       players: updateTeamDto.players || existing.players,

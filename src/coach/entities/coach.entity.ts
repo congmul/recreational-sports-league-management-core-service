@@ -10,6 +10,9 @@ export class Coach extends Document {
   
     @Prop({ required: true })
     lastName: string;
+    
+    @Prop()
+    profileUrl: string
 
     @Prop()
     nationality: string
