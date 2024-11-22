@@ -21,7 +21,9 @@ export class CoachService {
         dateOfBirth: createCoachDto.dateOfBirth,
         joinedTeam: createCoachDto.joinedTeam,
         nationality: createCoachDto.nationality,
-        team: createCoachDto.team
+        team: createCoachDto.team,
+        teamName: createCoachDto.teamName,
+        crest: createCoachDto.crest
       });
 
       if(createCoachDto.team){
@@ -84,6 +86,8 @@ export class CoachService {
       nationality: updateCoachDto.nationality || existing.nationality,
       dateOfBirth: updateCoachDto.dateOfBirth || existing.dateOfBirth,
       team: updateCoachDto.team || existing.team,
+      teamName: updateCoachDto.teamName || existing.teamName,
+      crest: updateCoachDto.crest || existing.crest,
       joinedTeam: updateCoachDto.joinedTeam || existing.joinedTeam,
     })
   }

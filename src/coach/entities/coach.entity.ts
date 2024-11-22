@@ -21,6 +21,12 @@ export class Coach extends Document {
     team: Team
 
     @Prop()
+    teamName: string;
+
+    @Prop()
+    crest:string;
+
+    @Prop()
     joinedTeam: Date
 }
 
