@@ -76,6 +76,8 @@ export class SeedService implements OnModuleInit {
             nationality: teams[key].coach.nationality,
             dateOfBirth: teams[key].coach.dateOfBirth,
             team: createdTeam._id,
+            teamName: teams[key].name,
+            crest: teams[key].crest,
             joinedTeam: teams[key].coach.contract.start
         });
 
