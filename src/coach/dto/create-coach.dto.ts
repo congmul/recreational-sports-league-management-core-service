@@ -11,6 +11,10 @@ export class CreateCoachDto {
     @IsNotEmpty()
     lastName: string;
 
+    @ApiProperty({ example: 'https://crests.football-data.org/73.png', description: 'url link of the coach' })
+    @IsNotEmpty()
+    profileUrl: string;
+
     @ApiProperty({ example: 'australia', description: 'nationality of the coach' })
     @IsString()
     nationality: string
@@ -23,6 +27,16 @@ export class CreateCoachDto {
     @IsMongoId({ message: 'Team must be a valid MongoDB ObjectId' })
     @IsOptional()
     team: Team
+
+    @ApiProperty({ example: 'Tottenham Hotspur', description: 'Name of the team' })
+    @IsString()
+    @IsOptional()
+    teamName: string;
+
+    @ApiProperty({ example: 'https://crests.football-data.org/73.png', description: 'url link of the team' })
+    @IsString()
+    @IsOptional()
+    crest: string
 
     @ApiProperty({ example: '2023-07-01', description: 'joined date of the coach' })
     @IsString()

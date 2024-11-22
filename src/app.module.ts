@@ -27,7 +27,9 @@ import { SeedModule } from './seed/seed.module';
       }),
       inject: [ConfigService],
     }),    
-    UserModule, HealthModule, AuthModule, TeamModule, PlayerModule, CoachModule, SeedModule
+    UserModule, HealthModule, 
+    AuthModule, 
+    TeamModule, PlayerModule, CoachModule, SeedModule
   ],
   providers: [SeedService]
 })

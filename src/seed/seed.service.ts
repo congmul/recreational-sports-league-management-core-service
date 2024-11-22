@@ -40,6 +40,8 @@ export class SeedService implements OnModuleInit {
             name: teams[key].name,
             tla:  teams[key].tla,
             crest: teams[key].crest,
+            teamColor: teams[key].teamColor,
+            baseCity: teams[key].baseCity,
             establish: teams[key].founded,
             homeStadium: teams[key].venue,
         });
@@ -76,6 +78,8 @@ export class SeedService implements OnModuleInit {
             nationality: teams[key].coach.nationality,
             dateOfBirth: teams[key].coach.dateOfBirth,
             team: createdTeam._id,
+            teamName: teams[key].name,
+            crest: teams[key].crest,
             joinedTeam: teams[key].coach.contract.start
         });
 

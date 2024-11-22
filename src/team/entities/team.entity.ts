@@ -15,6 +15,12 @@ export class Team extends Document {
   @Prop()
   crest:string;
 
+  @Prop()
+  teamColor:string;
+
+  @Prop()
+  baseCity:string;
+
   @Prop({
     type: Date,
     set: (value: number | string) => new Date(`${value}-01-01T00:00:00Z`), // Store as a date object

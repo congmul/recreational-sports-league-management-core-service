@@ -10,6 +10,9 @@ export class Coach extends Document {
   
     @Prop({ required: true })
     lastName: string;
+    
+    @Prop()
+    profileUrl: string
 
     @Prop()
     nationality: string
@@ -19,6 +22,12 @@ export class Coach extends Document {
 
     @Prop( {type: mongoose.Schema.Types.ObjectId, ref: 'Team'} )
     team: Team
+
+    @Prop()
+    teamName: string;
+
+    @Prop()
+    crest:string;
 
     @Prop()
     joinedTeam: Date
