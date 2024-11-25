@@ -90,8 +90,10 @@ export class PlayerService {
       nationality: updatePlayerDto.nationality || existing.nationality,
       dateOfBirth: updatePlayerDto.dateOfBirth || existing.dateOfBirth,
       team: updatePlayerDto.team || existing.team,
+      shirtNumber: updatePlayerDto.shirtNumber || existing.shirtNumber,
       joinedTeam: updatePlayerDto.joinedTeam || existing.joinedTeam,
       position: updatePlayerDto.position || existing.position,
+      section: updatePlayerDto.section || existing.section,
     })
   }
 
