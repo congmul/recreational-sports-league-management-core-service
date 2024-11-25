@@ -13,15 +13,18 @@ export class CreatePlayerDto {
     lastName: string;
 
     @ApiProperty({ example: 'https://crests.football-data.org/73.png', description: 'url link of the player' })
-    @IsNotEmpty()
+    @IsString()
+    @IsOptional()
     profileUrl: string;
 
     @ApiProperty({ example: '7', description: 'shirt number of the player' })
     @IsNumber()
+    @IsNotEmpty()
     shirtNumber: number
 
     @ApiProperty({ example: 'south korea', description: 'nationality of the player' })
     @IsString()
+    @IsNotEmpty()
     nationality: string
 
     @ApiProperty({ example: '1992-08-07', description: 'date of birth of the player' })
@@ -39,9 +42,10 @@ export class CreatePlayerDto {
 
     @ApiProperty({ example: 'Left Winger', description: 'section of the player' })
     @IsString()
+    @IsOptional()
     section: string
 
     @ApiProperty({ example: 'forward', description: 'position of the player' })
-    @IsEnum(PlayerPosition, { message: 'Role must be either goalkeeper, defender, midfielder, or forward' })
+    @IsEnum(PlayerPosition, { message: 'Position must be either goalkeeper, defender, midfielder, or forward' })
     position: PlayerPosition
 }
