@@ -10,6 +10,7 @@ import { PlayerModule } from './player/player.module';
 import { CoachModule } from './coach/coach.module';
 import { SeedService } from './seed/seed.service';
 import { SeedModule } from './seed/seed.module';
+import { AzureStorageModule } from './azure-storage/azure-storage.module';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { SeedModule } from './seed/seed.module';
     }),    
     UserModule, HealthModule, 
     AuthModule, 
-    TeamModule, PlayerModule, CoachModule, SeedModule
+    TeamModule, PlayerModule, CoachModule, SeedModule, AzureStorageModule
   ],
   providers: [SeedService]
 })
