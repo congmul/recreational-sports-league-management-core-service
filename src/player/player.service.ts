@@ -26,7 +26,9 @@ export class PlayerService {
         joinedTeam: createPlayerDto.joinedTeam,
         nationality: createPlayerDto.nationality,
         position: createPlayerDto.position,
-        team: createPlayerDto.team
+        team: createPlayerDto.team,
+        shirtNumber: createPlayerDto.shirtNumber,
+        section: createPlayerDto.section
       });
 
       if(createPlayerDto.team){
