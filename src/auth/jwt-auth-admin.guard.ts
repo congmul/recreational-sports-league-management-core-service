@@ -20,7 +20,6 @@ export class JwtAuthAdminGuard extends AuthGuard('jwt') {
         throw new UnauthorizedException('Token is expired.');
       }
     }
-    throw new UnauthorizedException('Token is expired.');
 
     // If the user doesn't have admin role, Unauthorized.
     if(user.userInfo.role !== "admin"){
