@@ -11,12 +11,20 @@ export class JwtAuthAdminGuard extends AuthGuard('jwt') {
 
   handleRequest(err, user, info) {    
     if (err || !user) {
-      throw err || new UnauthorizedException();
+      throw err || new UnauthorizedException('There is no valid Token');
     }
+
+    // Check if the token is expired or not
+    if(user.exp){
+      if(user.exp * 1000 - Date.now() <= 0){
+        throw new UnauthorizedException('Token is expired.');
+      }
+    }
+    throw new UnauthorizedException('Token is expired.');
 
     // If the user doesn't have admin role, Unauthorized.
     if(user.userInfo.role !== "admin"){
-        throw new UnauthorizedException();
+        throw new UnauthorizedException('Only admin can access the endpoint');
     }
     return user;
   }
