@@ -1,13 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, HttpException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, HttpException, UseGuards } from '@nestjs/common';
 import { CoachService } from './coach.service';
 import { CreateCoachDto } from './dto/create-coach.dto';
 import { UpdateCoachDto } from './dto/update-coach.dto';
 import { ApiOperation } from '@nestjs/swagger';
+import { JwtAuthAdminGuard } from 'src/auth/jwt-auth-admin.guard';
 
 @Controller('coach')
 export class CoachController {
   constructor(private readonly coachService: CoachService) {}
 
+  @UseGuards(JwtAuthAdminGuard)
   @Post()
   @ApiOperation({ summary: 'Create a new coach', description: 'Create a new coach' })
   async create(@Body() createCoachDto: CreateCoachDto) {
@@ -52,6 +54,7 @@ export class CoachController {
     return this.coachService.findById(id);
   }
 
+  @UseGuards(JwtAuthAdminGuard)
   @Patch(':id')
   @ApiOperation({ summary: 'Update a coach by an id', description: 'Update a coach by an id' })
   async update(@Param('id') id: string, @Body() updateCoachDto: UpdateCoachDto) {
@@ -108,6 +111,7 @@ export class CoachController {
     }
   }
 
+  @UseGuards(JwtAuthAdminGuard)
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a coach by id', description: 'Delete a coach by id' })
   async remove(@Param('id') id: string) {

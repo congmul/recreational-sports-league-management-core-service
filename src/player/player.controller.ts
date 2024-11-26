@@ -1,13 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 import { PlayerService } from './player.service';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
 import { ApiOperation } from '@nestjs/swagger';
+import { JwtAuthAdminGuard } from 'src/auth/jwt-auth-admin.guard';
 
 @Controller('player')
 export class PlayerController {
   constructor(private readonly playerService: PlayerService) {}
 
+  @UseGuards(JwtAuthAdminGuard)
   @Post()
   @ApiOperation({ summary: 'Create a new player', description: 'Create a new player' })
   async create(@Body() createPlayerDto: CreatePlayerDto) {
@@ -78,6 +80,7 @@ export class PlayerController {
     }
   }
 
+  @UseGuards(JwtAuthAdminGuard)
   @Patch(':id')
   @ApiOperation({ summary: 'Update a player by an id', description: 'Update a player by an id' })
   async update(@Param('id') id: string, @Body() updatePlayerDto: UpdatePlayerDto) {
@@ -122,6 +125,7 @@ export class PlayerController {
     }
   }
 
+  @UseGuards(JwtAuthAdminGuard)
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a player by id', description: 'Delete a player by id' })
   async remove(@Param('id') id: string) {

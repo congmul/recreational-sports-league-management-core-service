@@ -1,14 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, Query, UseGuards } from '@nestjs/common';
 import { TeamService } from './team.service';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import { ApiOperation } from '@nestjs/swagger';
 import { isObjectIdOrHexString } from 'mongoose';
+import { JwtAuthAdminGuard } from 'src/auth/jwt-auth-admin.guard';
 
 @Controller('team')
 export class TeamController {
   constructor(private readonly teamService: TeamService) {}
 
+  @UseGuards(JwtAuthAdminGuard)
   @Post()
   @ApiOperation({ summary: 'Create a Team', description: 'Create a Team' })
   async create(@Body() createTeamDto: CreateTeamDto) {
@@ -50,10 +52,14 @@ export class TeamController {
 
   @Get(':identifier')
   @ApiOperation({ summary: 'Get a team by an identifier', description: 'Get a team by an identifier' })
-  async findOne(@Param('identifier') identifier: string) {
+  async findOne(@Param('identifier') identifier: string, @Query("populate") populate:string) {
     let team: CreateTeamDto;
     if(isObjectIdOrHexString(identifier)){
-      team = await this.teamService.findById(identifier);
+      if(populate === "without"){
+        team = await this.teamService.findByIdWithoutPopulate(identifier);
+      }else{
+        team = await this.teamService.findById(identifier);
+      }
     }else{
       team = await this.teamService.findByName(identifier);
     }
@@ -73,6 +79,7 @@ export class TeamController {
     return team;
   }
 
+  @UseGuards(JwtAuthAdminGuard)
   @Patch(':id')
   @ApiOperation({ summary: 'Update a team by an identifier', description: 'Update a team by an identifier' })
   async update(@Param('id') id: string, @Body() updateTeamDto: UpdateTeamDto) {
@@ -116,6 +123,7 @@ export class TeamController {
     }
   }
 
+  @UseGuards(JwtAuthAdminGuard)
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a team by id', description: 'Delete a team by id' })
   async remove(@Param('id') id: string) {
