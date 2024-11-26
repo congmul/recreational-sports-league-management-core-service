@@ -29,9 +29,7 @@ export class CreateTeamDto {
     baseCity: string
 
     @ApiProperty({ example: '1882', description: 'Year the team was established' })
-    @IsInt()
-    @Min(1800) // Example: Minimum year allowed
-    @Max(new Date().getFullYear()) // Maximum is the current year
+    @IsString()
     establish: Date;
   
     @ApiProperty({ example: 'Tottenham Hotspur Stadium', description: 'Home stadium of the team' })

@@ -53,8 +53,12 @@ export class TeamService {
         );
       }
       if(createTeamDto.coach){
+        // Remove selected coach from previous team
+        const selectedCoach = await this.coachModel.findById(createTeamDto.coach);
+        await this.teamModel.findByIdAndUpdate(selectedCoach.team, { coach: null})
+
         await this.coachModel.findByIdAndUpdate(createTeamDto.coach, 
-          { team: newTeam._id, joinedTeam: Date.now()},
+          { team: newTeam._id, joinedTeam: Date.now(), teamName: createTeamDto.name, crest: createTeamDto.crest},
           // { session }
         )
       }

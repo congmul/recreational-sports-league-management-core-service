@@ -21,11 +21,7 @@ export class Team extends Document {
   @Prop()
   baseCity:string;
 
-  @Prop({
-    type: Date,
-    set: (value: number | string) => new Date(`${value}-01-01T00:00:00Z`), // Store as a date object
-    get: (value: Date) => value.getFullYear(), // Retrieve only the year
-  })
+  @Prop()
   establish: Date;
 
   @Prop()
