@@ -13,6 +13,7 @@ The main goal of the Recreational Sports League Management Core Service is to ha
 - [Usage](#usage)
 - [Authentication Flow](#authentication-flow)
 - [Endpoints](#endpoints)
+- [Protect Endpoints](#protect-endpoints)
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
 
@@ -59,6 +60,13 @@ This will start the application on 'http://localhost:3000'
 
 ## Endpoints
 [API_Specification](https://recreation-sports-core-service-eja5ffe3fraeb5f8.eastus2-01.azurewebsites.net/api-spec)
+
+## Protect Endpoints
+It is using Passport JWT guard to protect endpoints. POST / PATCH / DELETE request will be check if it is valid request from admin or not.
+Please check jwt.stragey.ts/jwt-auth-admin.guard file in auth folder.
+1. It will extract JWT token from Header (Bearer token).
+2. Check if it is expired or not. 
+3. Check if the user has "admin" role or not. If not, 401.
 
 ## Project Structure
 1. Module file
