@@ -135,12 +135,12 @@ export class TeamService {
       // access existing coach and set team null
       if(existing.coach){
         await this.coachModel.findByIdAndUpdate(existing.coach, 
-          {team: null}
+          {team: null, teamName: null, crest: null}
         )
       }
       // iterating over all new players and set team id
       await this.coachModel.findByIdAndUpdate(updateTeamDto.coach, 
-        {team: id}
+        {team: id, teamName: updateTeamDto.name, crest: updateTeamDto.crest }
       )
     }
 
@@ -180,7 +180,7 @@ export class TeamService {
     if(existing.coach){
       await this.coachModel.findByIdAndUpdate(
         existing.coach,
-        { team: null }
+        { team: null, teamName: null, crest: null }
       )
     }
     return this.teamModel.deleteOne({_id: id}).exec();

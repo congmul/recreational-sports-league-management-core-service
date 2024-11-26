@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, Query } from '@nestjs/common';
 import { TeamService } from './team.service';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
@@ -50,10 +50,14 @@ export class TeamController {
 
   @Get(':identifier')
   @ApiOperation({ summary: 'Get a team by an identifier', description: 'Get a team by an identifier' })
-  async findOne(@Param('identifier') identifier: string) {
+  async findOne(@Param('identifier') identifier: string, @Query("populate") populate:string) {
     let team: CreateTeamDto;
     if(isObjectIdOrHexString(identifier)){
-      team = await this.teamService.findById(identifier);
+      if(populate === "without"){
+        team = await this.teamService.findByIdWithoutPopulate(identifier);
+      }else{
+        team = await this.teamService.findById(identifier);
+      }
     }else{
       team = await this.teamService.findByName(identifier);
     }
