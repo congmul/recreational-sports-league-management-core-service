@@ -64,18 +64,24 @@ export class CoachService {
       throw { name: "NotFoundError" }
     }
     if(updateCoachDto.team){
+      // TODO: Need to handle if coach already exist.
       const team = await this.teamModel.findById(updateCoachDto.team);
-      // Check if a coach is already assigned
-      if (team.coach) {
-        throw { name: "DuplicatedCoachError" }
-      }
+      // // Check if a coach is already assigned
+      // if (team.coach) {
+      //   throw { name: "DuplicatedCoachError" }
+      // }
 
-      // Remove the player from original team
+      // Remove the team from Previous Coach 
+      await this.coachModel.findByIdAndUpdate(
+        team.coach,
+        { team: null, teamName: null, crest: null }
+      )
+      // Remove previous coach from original team
       await this.teamModel.findByIdAndUpdate(
         existing.team,
         { coach: null }
       )
-      // Add the player to new team
+      // Add new coach to new team
       await this.teamModel.findByIdAndUpdate(
         updateCoachDto.team,
         { coach: id }
